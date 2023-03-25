@@ -23,6 +23,7 @@
 #include "hev-logger.h"
 #include "hev-socks5-logger.h"
 #include "hev-socks5-tunnel.h"
+#include "hev-log-ios.h"
 
 #include "hev-main.h"
 
@@ -87,7 +88,8 @@ lwip_fini (void)
 }
 
 int
-hev_socks5_tunnel_main (const char *config_path, int tun_fd)
+hev_socks5_tunnel_main (const char *config_path, int tun_fd,
+                        void (*funcPtr) (const char *))
 {
     const char *pid_file;
     const char *log_file;
@@ -102,9 +104,11 @@ hev_socks5_tunnel_main (const char *config_path, int tun_fd)
     log_file = hev_config_get_misc_log_file ();
     log_level = hev_config_get_misc_log_level ();
 
-    res = hev_logger_init (log_level, log_file);
+    res = hev_logger_init (log_level, log_file, funcPtr);
     if (res < 0)
         return -2;
+
+    LOG_D ("hello world comes in ....");
 
     res = hev_socks5_logger_init (log_level, log_file);
     if (res < 0)
@@ -157,7 +161,7 @@ main (int argc, char *argv[])
         return -1;
     }
 
-    res = hev_socks5_tunnel_main (argv[1], -1);
+    res = hev_socks5_tunnel_main (argv[1], -1, NULL);
     if (res < 0)
         return -2;
 

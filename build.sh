@@ -1,5 +1,6 @@
 #!/bin/sh
 
+make clean
 make PP="xcrun --sdk iphoneos --toolchain iphoneos clang" \
      CC="xcrun --sdk iphoneos --toolchain iphoneos clang" \
      CFLAGS="-arch arm64 -mios-version-min=12.0" \

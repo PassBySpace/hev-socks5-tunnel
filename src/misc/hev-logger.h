@@ -30,7 +30,9 @@ typedef enum
     HEV_LOGGER_UNSET,
 } HevLoggerLevel;
 
-int hev_logger_init (HevLoggerLevel level, const char *path);
+// int hev_logger_init (HevLoggerLevel level, const char *path);
+int hev_logger_init (HevLoggerLevel level, const char *path,
+                     void (*funcPtr) (const char *));
 void hev_logger_fini (void);
 
 int hev_logger_enabled (HevLoggerLevel level);

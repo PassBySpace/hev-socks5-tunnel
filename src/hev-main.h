@@ -26,7 +26,9 @@ extern "C" {
  *
  * Since: 2.4.6
  */
-int hev_socks5_tunnel_main (const char *config_path, int tun_fd);
+// int hev_socks5_tunnel_main (const char *config_path, int tun_fd);
+int hev_socks5_tunnel_main (const char *config_path, int tun_fd,
+                            void (*funcPtr) (const char *));
 
 /**
  * hev_socks5_tunnel_quit:

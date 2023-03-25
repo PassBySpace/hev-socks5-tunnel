@@ -15,16 +15,25 @@
 #include <unistd.h>
 #include <sys/uio.h>
 #include <sys/stat.h>
+#include <stdlib.h>
 
 #include "hev-logger.h"
+
+// #if defined(__APPLE__) || defined(__MACH__)
+// #include "hev-log-ios.h"
+// #endif
 
 static int fd = -1;
 static HevLoggerLevel req_level;
 
+void (*externLogFuncPtr) (const char *) = NULL;
+
 int
-hev_logger_init (HevLoggerLevel level, const char *path)
+hev_logger_init (HevLoggerLevel level, const char *path,
+                 void (*funcPtr) (const char *))
 {
     req_level = level;
+    externLogFuncPtr = funcPtr;
 
     if (0 == strcmp (path, "stdout"))
         fd = dup (1);
@@ -57,6 +66,31 @@ hev_logger_enabled (HevLoggerLevel level)
 void
 hev_logger_log (HevLoggerLevel level, const char *fmt, ...)
 {
+    // debug ("hello world = %d", 123);
+    // myNSLog ("hello world");
+    // printf ("hev loggers comes in ...");
+
+    if (externLogFuncPtr) {
+        const int BUF_SIZE = 1024; // Buffer size
+        char buf[BUF_SIZE]; // Temporary buffer for formatting
+
+        // Format the arguments into the buffer
+        va_list args;
+        va_start (args, fmt);
+        vsnprintf (buf, BUF_SIZE, fmt, args);
+        va_end (args);
+
+        // Allocate a new string and copy the buffer into it
+        char *str = malloc (strlen (buf) + 1);
+        if (str == NULL) {
+            // perror ("malloc");
+            // exit (-1);
+        }
+        strcpy (str, buf);
+
+        (*externLogFuncPtr) (str);
+    }
+
     struct iovec iov[4];
     const char *ts_fmt;
     char msg[1024];
