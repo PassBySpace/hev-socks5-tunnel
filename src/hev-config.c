@@ -348,7 +348,6 @@ hev_config_parse_doc (yaml_document_t *doc)
 int
 hev_config_init (const char *config_path)
 {
-    LOG_D ("the config path = %s", config_path);
     yaml_parser_t parser;
     yaml_document_t doc;
     FILE *fp;

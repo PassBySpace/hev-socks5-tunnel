@@ -108,7 +108,8 @@ hev_socks5_tunnel_main (const char *config_path, int tun_fd,
     if (res < 0)
         return -2;
 
-    LOG_D ("hello world comes in ....");
+    LOG_D ("-> [hev]: hello world comes in ....");
+    LOG_D ("-> [hev]: %s", config_path);
 
     res = hev_socks5_logger_init (log_level, log_file);
     if (res < 0)

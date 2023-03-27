@@ -3,8 +3,8 @@
 make clean
 make PP="xcrun --sdk iphoneos --toolchain iphoneos clang" \
      CC="xcrun --sdk iphoneos --toolchain iphoneos clang" \
-     CFLAGS="-arch arm64 -mios-version-min=12.0" \
-     LFLAGS="-arch arm64 -mios-version-min=12.0 -Wl,-Bsymbolic-functions" static
+     CFLAGS="-arch arm64 -mios-version-min=11.0" \
+     LFLAGS="-arch arm64 -mios-version-min=11.0 -Wl,-Bsymbolic-functions" static
 
 libtool -static -o libhev-socks5-tunnel.a \
                    bin/libhev-socks5-tunnel.a \
