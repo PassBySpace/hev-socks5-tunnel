@@ -29,8 +29,7 @@ static HevLoggerLevel req_level;
 void (*externLogFuncPtr) (const char *) = NULL;
 
 int
-hev_logger_init (HevLoggerLevel level, const char *path,
-                 void (*funcPtr) (const char *))
+hev_logger_init (HevLoggerLevel level, const char *path, void (*funcPtr) (const char *))
 {
     req_level = level;
     externLogFuncPtr = funcPtr;
@@ -66,31 +65,6 @@ hev_logger_enabled (HevLoggerLevel level)
 void
 hev_logger_log (HevLoggerLevel level, const char *fmt, ...)
 {
-    // debug ("hello world = %d", 123);
-    // myNSLog ("hello world");
-    // printf ("hev loggers comes in ...");
-
-    if (externLogFuncPtr) {
-        const int BUF_SIZE = 1024; // Buffer size
-        char buf[BUF_SIZE]; // Temporary buffer for formatting
-
-        // Format the arguments into the buffer
-        va_list args;
-        va_start (args, fmt);
-        vsnprintf (buf, BUF_SIZE, fmt, args);
-        va_end (args);
-
-        // Allocate a new string and copy the buffer into it
-        char *str = malloc (strlen (buf) + 1);
-        if (str == NULL) {
-            // perror ("malloc");
-            // exit (-1);
-        }
-        strcpy (str, buf);
-
-        (*externLogFuncPtr) (str);
-    }
-
     struct iovec iov[4];
     const char *ts_fmt;
     char msg[1024];
@@ -139,6 +113,13 @@ hev_logger_log (HevLoggerLevel level, const char *fmt, ...)
 
     iov[3].iov_base = "\n";
     iov[3].iov_len = 1;
+
+    if (externLogFuncPtr) {
+        int total_len = iov[0].iov_len + iov[1].iov_len + iov[2].iov_len + iov[3].iov_len;
+        char us[total_len];
+        sprintf (us, "%s%s%s%s", (char *)iov[0].iov_base, (char *)iov[1].iov_base, (char *)iov[2].iov_base, (char *)iov[3].iov_base);
+        (*externLogFuncPtr) (us);
+    }
 
     if (writev (fd, iov, 4)) {
         /* ignore return value */

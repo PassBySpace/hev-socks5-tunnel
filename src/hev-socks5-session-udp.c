@@ -212,6 +212,8 @@ udp_recv_handler (void *arg, struct udp_pcb *pcb, struct pbuf *p,
 HevSocks5SessionUDP *
 hev_socks5_session_udp_new (struct udp_pcb *pcb, HevTaskMutex *mutex)
 {
+    LOG_D("%p [before] socks5 session udp new");
+
     HevSocks5SessionUDP *self;
     int res;
 
@@ -225,7 +227,7 @@ hev_socks5_session_udp_new (struct udp_pcb *pcb, HevTaskMutex *mutex)
         return NULL;
     }
 
-    LOG_D ("%p socks5 session udp new", self);
+    LOG_D ("%p [after] socks5 session udp new", self);
 
     return self;
 }
@@ -324,6 +326,8 @@ int
 hev_socks5_session_udp_construct (HevSocks5SessionUDP *self,
                                   struct udp_pcb *pcb, HevTaskMutex *mutex)
 {
+    LOG_D ("%p [before] socks5 session udp construct", self);
+
     HevConfigServer *srv = hev_config_get_socks5_server ();
     int type;
     int res;
@@ -333,11 +337,14 @@ hev_socks5_session_udp_construct (HevSocks5SessionUDP *self,
     else
         type = HEV_SOCKS5_TYPE_UDP_IN_TCP;
 
+    LOG_D("%p before run my function", self);
+    LOG_D("the func = %p", hev_socks5_client_udp_construct);
     res = hev_socks5_client_udp_construct (&self->base, type);
+    LOG_D("%p after run my function", self);
     if (res < 0)
         return -1;
 
-    LOG_D ("%p socks5 session udp construct", self);
+    LOG_D ("%p [after] socks5 session udp construct", self);
 
     HEV_OBJECT (self)->klass = HEV_SOCKS5_SESSION_UDP_TYPE;
 
