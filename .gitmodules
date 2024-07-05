@@ -1,12 +1,12 @@
 [submodule "third-part/hev-task-system"]
 	path = third-part/hev-task-system
-	url = https://github.com/heiher/hev-task-system
-[submodule "third-part/yaml"]
-	path = third-part/yaml
-	url = https://github.com/heiher/yaml
-[submodule "third-part/lwip"]
-	path = third-part/lwip
-	url = https://github.com/heiher/lwip
+	url = git@github.com:PassBySpace/hev-task-system.git
 [submodule "src/core"]
 	path = src/core
-	url = https://github.com/heiher/hev-socks5-core
+	url = git@github.com:PassBySpace/hev-socks5-core.git
+[submodule "third-part/yaml"]
+	path = third-part/yaml
+	url = git@github.com:PassBySpace/yaml.git
+[submodule "third-part/lwip"]
+	path = third-part/lwip
+	url = git@github.com:PassBySpace/lwip.git
